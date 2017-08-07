@@ -2,20 +2,31 @@ var express = require("express");
 var app = express();
 
 app.get("/", function(request, response) {
-  response.send("Hi there, Welcome to my Home Page...");
+  response.render("index.ejs");
+  // response.send("Hi there, Welcome to my Home Page...");
 });
 
 app.get("/speak/:animal", function(request, response) {
+  var animal = request.params.animal;
+  
+  var sounds = {
+    pig: "oink",
+    dog: "woof! woof!",
+    cat: "meow"
+  };
+
+  response.render("animal.ejs", { animalVar: animal,
+  soundVar: sounds[animal]});
   // console.log(request.params);
-  if(request.params.animal === "pig") {
-    response.send("The " +request.params.animal +" says 'oink'!");
-  } else if(request.params.animal === "dog") {
-    response.send("The " +request.params.animal +" says 'Woof! Woof! '");
-  } else if(request.params.animal === "cow") {
-    response.send("The " +request.params.animal +" says 'Moo!'");
-  } else {
-    response.send("The " +request.params.animal +" says something!");
-  }
+  // if(request.params.animal === "pig") {
+  //   response.send("The " +request.params.animal +" says 'oink'!");
+  // } else if(request.params.animal === "dog") {
+  //   response.send("The " +request.params.animal +" says 'Woof! Woof! '");
+  // } else if(request.params.animal === "cow") {
+  //   response.send("The " +request.params.animal +" says 'Moo!'");
+  // } else {
+  //   response.send("The " +request.params.animal +" says something!");
+  // }
 });
 
 app.get("/repeat/:something/:id", function(request, response) {
