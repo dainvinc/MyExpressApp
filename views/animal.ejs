@@ -1,3 +1,11 @@
-<h1>You've entered the animal as: <%= animalVar.toUpperCase() %></h1>
+<h1>The list of animals are: </h1>
 
-<p><%= animalVar %> says <%= soundVar %></p>
+<% animals.forEach(function(animal) { %>
+  <li><%= animal %> - <%= sounds[animal] %></li>
+<% }); %> 
+
+<form action="/newanimal" method="POST">
+  <input type="text" name="newanimal" placeholder="Animal Name"></input>
+  <input type="text" name="newsound" placeholder="Sound Name"></input>
+  <button>New Animal</button>
+</form>

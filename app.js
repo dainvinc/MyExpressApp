@@ -1,32 +1,42 @@
 var express = require("express");
 var app = express();
+var bodyParser = require("body-parser");
+
+app.use(express.static("/public"));
+app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+
+var animals = ["pig", "dog", "cat"];
+var sounds = {
+  pig: "oink",
+  dog: "woof! woof!",
+  cat: "meow"
+};
 
 app.get("/", function(request, response) {
-  response.render("index.ejs");
+  response.render("index");
   // response.send("Hi there, Welcome to my Home Page...");
 });
 
-app.get("/speak/:animal", function(request, response) {
-  var animal = request.params.animal;
-  
-  var sounds = {
-    pig: "oink",
-    dog: "woof! woof!",
-    cat: "meow"
-  };
+app.get("/speak", function(req, res) {
+  res.render("speak");
+});
 
-  response.render("animal.ejs", { animalVar: animal,
-  soundVar: sounds[animal]});
-  // console.log(request.params);
-  // if(request.params.animal === "pig") {
-  //   response.send("The " +request.params.animal +" says 'oink'!");
-  // } else if(request.params.animal === "dog") {
-  //   response.send("The " +request.params.animal +" says 'Woof! Woof! '");
-  // } else if(request.params.animal === "cow") {
-  //   response.send("The " +request.params.animal +" says 'Moo!'");
-  // } else {
-  //   response.send("The " +request.params.animal +" says something!");
-  // }
+app.get("/speak/animal", function(request, response) {
+  // var animal = request.params.animal;
+  response.render("animal", {animals: animals, sounds: sounds});
+});
+
+app.post("/newanimal", function(req, res) {
+  var newanimal = req.body.newanimal;
+  var newsound = req.body.newsound; 
+  
+  var animal = animals.push(newanimal);
+  sounds[newanimal] = newsound;
+  //console.log(sounds);
+  // console.log(req.body.newanimal);
+  
+  res.redirect("/speak/animal");
 });
 
 app.get("/repeat/:something/:id", function(request, response) {
